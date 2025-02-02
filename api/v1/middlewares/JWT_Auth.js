@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import { verifyJwt } from "../auth/JWT_services.js";
 import ApiResponse from "../lib/ApiResponse.js";
 
