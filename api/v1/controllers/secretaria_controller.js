@@ -62,7 +62,7 @@ const registrarFuncionario = async (req, res) => {
             return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionário")
         }
 
-        return ApiResponse.CREATED(res, { id_aluno: novoFuncionario.id }, `${novoFuncionario.descricao} ${novoFuncionario.nome} criado com sucesso!`)
+        return ApiResponse.CREATED(res, { id_funcionario: novoFuncionario.id }, `${novoFuncionario.descricao} ${novoFuncionario.nome} criado com sucesso!`)
     } catch (error) {
         return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionario", error)
     }

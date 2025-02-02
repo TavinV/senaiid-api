@@ -179,7 +179,7 @@ const buscarAtrasos = async (req, res) => {
         return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
     }
 
-    const atrasos = await getLateEntries(user.id)
+    const [atrasos, error] = await getLateEntries(user.id)
 
     return ApiResponse.OK(res, { atrasos })
 }
@@ -345,7 +345,7 @@ const pedirUpdate = async (req, res) => {
     const [info, sendEmailError] = await sendMail(email, `Seu pedido de correção de dados está em análise`, emailHtml)
 
     if (!sendEmailError) {
-        return ApiResponse.OK(res, null, "Pedido de verificação criado com sucesso")
+        return ApiResponse.OK(res, { numero_pedido: updateRequestId }, "Pedido de verificação criado com sucesso")
     } else {
         return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`)
     }
