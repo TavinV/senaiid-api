@@ -283,7 +283,7 @@ const validarToken = async (req, res) => {
     const [tokenData, findTokenError] = await verifyToken(token)
 
     if (!tokenData) {
-        return ApiResponse.UNAUTHORIZED(res, "Código de verificação inválido")
+        return ApiResponse.UNAUTHORIZED(res, "Código de verificação inválido ou expirado")
     }
 
     const time_diff = minuteDiff(new Date(), tokenData.expires)
