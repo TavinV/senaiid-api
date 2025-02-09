@@ -1,5 +1,5 @@
 // Executa os jobs necessários para manutenção do Banco de Dados
-
+import logger from './lib/logger.js';
 import cron from 'node-cron'
 
 import fs from "fs";
@@ -22,18 +22,17 @@ const loadJobs = async () => {
 
 const initJobs = () => {
     cron.schedule("*/5 * * * *", async () => {
-        console.log("🔄 Executando jobs...");
+        logger.info("Executando os jobs de manutenção do Banco de Dados");
 
         const jobs = await loadJobs();
         for (const job of jobs) {
             try {
                 await job();
             } catch (error) {
-                console.error("Erro ao executar job:", error);
+                logger.error(`Não foi possível executar o job ${job}`, error);
             }
         }
-
-        console.log(`✅ Jobs concluídos! (${moment().format("DD/MM/YYYY - HH:mm")})`);
+        logger.info("Jobs de manutenção do Banco de Dados executados com sucesso");
 
     });
 }

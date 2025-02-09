@@ -6,6 +6,9 @@ import PasswordResetToken from '../models/forgot_password_token_model.js'
 import { deleteToken } from "../services/email_token_services.js"
 import emailVerificationToken from '../models/email_verification_token_model.js'
 
+import logger from "../lib/logger.js"
+const childLogger = logger.child({ service: "expired_tokens_job" })
+
 const removeExpiredTokens = async () => {
     try {
         const now = new Date()
@@ -30,10 +33,10 @@ const removeExpiredTokens = async () => {
 
 
         if (removedEmailVerificationTokens != 0) {
-            console.log(`❌ Foram apagadas ${removedEmailVerificationTokens} tokens de verificação de email expirados.`)
+            childLogger.info(`Removed ${removedEmailVerificationTokens} expired email verification tokens`)
         }
         if (removedPasswordResetTokens != 0) {
-            console.log(`❌ Foram apagadas ${removedPasswordResetTokens} tokens de recuperação de senha expirados.`)
+            childLogger.info(`Removed ${removedPasswordResetTokens} expired password reset tokens`)
         }
 
 

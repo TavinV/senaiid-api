@@ -5,6 +5,9 @@ import path from "path"
 import { fileURLToPath } from 'url';
 import fs from 'fs'
 
+import logger from '../lib/logger.js'
+const childLogger = logger.child({ service: "user_services" })
+
 // Para utilizar o __filename e __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -101,9 +104,11 @@ const updateUser = async (user_id, data) => {
     }
     try {
         const result = await User.findOneAndUpdate({ id: user_id }, data)
+        childLogger.info(`User ${user_id} updated`)
 
         return [true, null]
     } catch (error) {
+        childLogger.error(`Error updating user ${user_id}`, error)
         return [false, 500]
     }
 }
@@ -111,12 +116,15 @@ const updateUser = async (user_id, data) => {
 const createUser = async (user) => {
     try {
         const result = await User.create(user)
+        childLogger.info(`User ${user.id} created`)
         return [result, null]
     } catch (error) {
 
         if (error.code === 11000) {
+            childLogger.error(`User ${user.id} already exists`, error)
             return [null, 409]
         } else {
+            childLogger.error(`Error creating user ${user.id}`, error)
             return [null, 500]
         }
     }
@@ -126,8 +134,10 @@ const createUser = async (user) => {
 const deleteUser = async (user_id) => {
     try {
         const result = await User.deleteOne({ id: user_id })
+        childLogger.info(`User ${user_id} deleted`)
         return [result, null]
     } catch (error) {
+        childLogger.error(`Error deleting user ${user_id}`, error)
         return [null, 500]
     }
 }

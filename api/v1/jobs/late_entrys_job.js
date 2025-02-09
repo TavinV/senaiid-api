@@ -2,6 +2,10 @@ import { closeLateEntry } from "../services/late_entry_services.js"
 import lateEntry from "../models/late_entry_model.js"
 import { minuteDiff } from "../lib/Horarios.js"
 
+import logger from "../lib/logger.js"
+const childLogger = logger.child({ service: "expired_tokens_job" })
+
+
 const lateEntryJob = async () => {
     try {
         const now = new Date()
@@ -13,7 +17,7 @@ const lateEntryJob = async () => {
             }
         }
     } catch (error) {
-        console.error("Erro ao processar atrasos:", error);
+        logger.error(`Couldn't close late entries due to ${error.message}`)
     }
 }
 

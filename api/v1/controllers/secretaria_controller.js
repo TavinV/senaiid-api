@@ -9,6 +9,7 @@ import ApiResponse from '../lib/ApiResponse.js';
 import { cripografarSenhaUsuario } from "../lib/Criptografar.js";
 import fs from 'fs'
 import moment from "moment";
+import logger from "../lib/logger.js";
 
 // Schemas
 import { updateUserSchema } from '../validation/user_schemas.js';
@@ -103,8 +104,7 @@ const deletarUsuario = async (req, res) => {
         if (filePath) {
             fs.unlink(filePath, (err) => {
                 if (err) {
-                    console.log("SECRETARIA CONTROLLER")
-                    console.error(err)
+                    logger.error(`Erro ao deletar a imagem do perfil do usuário ${user.id}.`, err)
                 }
             })
         }

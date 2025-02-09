@@ -1,13 +1,17 @@
 import lateEntry from '../models/late_entry_model.js'
+import logger from '../lib/logger.js'
+const childLogger = logger.child({ service: "late_entry_services" })
 
 const createLateEntry = async (user_id) => {
     const lateEntryId = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 62)]).join('');
 
     try {
         const newEntry = await lateEntry.create({ id: lateEntryId, user_id, responsavel: "-", motivo: "-" })
+        childLogger.info(`Late entry created for user ${user_id}`)
+
         return [newEntry, null]
     } catch (error) {
-        console.log(error)
+        childLogger.error(`Error creating late entry for user ${user_id}`, error)
         return [null, 500]
     }
 }
@@ -25,6 +29,7 @@ const validateLateEntry = async (late_entry_id, responsiblePerson, reason) => {
 
         return [updated, null]
     } catch (error) {
+        childLogger.error(`Error validating late entry ${late_entry_id}`, error)
         return [null, 500]
     }
 }
@@ -53,6 +58,7 @@ const closeLateEntry = async (late_entry_id) => {
         const result = await lateEntry.findOneAndUpdate({ id: late_entry_id }, { status: 'Não informado' })
         return [result, null]
     } catch (error) {
+        childLogger.error(`Error closing late entry ${late_entry_id}`, error)
         return [null, 500]
     }
 
