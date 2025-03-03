@@ -76,20 +76,20 @@ O login é realizado via **e-mail e senha**, retornando um **token JWT** com as 
 - **Funcionários**: não possuem registro de atraso e podem acessar o SENAI a qualquer momento.
 - **Secretaria**: controle total sobre os usuários, incluindo aprovação de pedidos de alteração de dados, validação de atrasos e cadastro de novos alunos.
 
----
+
 
 ## 📜 Registro de Logs
 
 Os logs são armazenados na pasta `api/logs/`, com nível padrão **INFO** (configurável via `.env`).
 
----
+
 
 ## 📞 Contato
 
 Dúvidas ou suporte? Entre em contato:
 📧 **otavioviniciusads@gmail.com**
 
----
+
 
 ## 📌 Documentação da API
 
