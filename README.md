@@ -34,13 +34,20 @@ api/
 
 ## ⚙️ Configuração do Ambiente
 
-Crie um arquivo `.env` na raiz do projeto e configure as seguintes variáveis:
+Crie um arquivo `.env` na raiz do projeto e configure conforme o exemplo abaixo (tambem no arquivo `.env.example`):
 
 ```
+# Chave secreta para autenticação (substitua por um valor seguro)
 SECRET=your_secret_key_here
+
+# String de conexão com o MongoDB (substitua com suas credenciais)
 MONGODB_CONNECTION=mongodb+srv://username:password@cluster.mongodb.net/database_name?retryWrites=true&w=majority&appName=your_app_name
+
+# Credenciais para envio de e-mails (substitua pelo seu e-mail e senha de app)
 NOREPLY_EMAIL=your_email@gmail.com
 NOREPLY_EMAIL_PASS=your_email_app_password
+
+# Nivel do logger
 LOG_LEVEL=info
 ```
 
@@ -50,7 +57,7 @@ LOG_LEVEL=info
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/TavinV/senaiid-api.git
    ```
 
 2. Instale as dependências:
@@ -70,7 +77,8 @@ LOG_LEVEL=info
 
 ## 🔑 Autenticação e Permissões
 
-O login é realizado via **e-mail e senha**, retornando um **token JWT** com as seguintes permissões embutidas:
+O login é realizado via **nome de usuário e senha**, retornando um **token JWT** com as permissões do usuário autenticado.
+Essas são as permissões dos diferentes níveis de usuários:
 
 - **Usuários padrão (Alunos e Funcionários)**: acesso ao QR Code para entrada, troca de senha, solicitação de alteração cadastral.
 - **Funcionários**: não possuem registro de atraso e podem acessar o SENAI a qualquer momento.
