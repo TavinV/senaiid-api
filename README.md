@@ -1,8 +1,8 @@
-# Senai ID - API REST
+# Senai ID - API
 
 ### 📌 Sistema de Controle de Acesso Digital para o SENAI
 
-Senai ID é uma API REST desenvolvida para substituir as carteirinhas físicas do SENAI por carteirinhas digitais, otimizando o processo de entrada e saída dos alunos. Além disso, oferece funcionalidades para atualização cadastral, controle de atrasos e gestão acadêmica.
+Senai ID é um sistema de controle de acesso desenvolvida para substituir as carteirinhas físicas do SENAI por carteirinhas digitais, otimizando o processo de entrada e saída dos alunos. Além disso, oferece funcionalidades para atualização cadastral, controle de atrasos e gestão acadêmica. Este projeto é um TCC
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -97,4 +97,4 @@ A documentação completa das rotas está disponível em breve.
 
 ---
 
-![SENAI Logo](link_para_logo_senai.png)
+![SENAI Logo]([link_para_logo_senai.png](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/SENAI_São_Paulo_logo.png/800px-SENAI_São_Paulo_logo.png))
