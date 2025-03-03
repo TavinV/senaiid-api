@@ -6,3 +6,5 @@
 {"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-02-09T20:40:00.642Z"}
 {"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-02-09T20:40:00.702Z"}
 {"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-02-09T20:44:28.279Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-02-09T20:45:00.456Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-02-09T20:45:00.534Z"}
