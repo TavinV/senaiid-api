@@ -97,4 +97,4 @@ A documentação completa das rotas está disponível em breve.
 
 ---
 
-![SENAI Logo]([link_para_logo_senai.png](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/SENAI_São_Paulo_logo.png/800px-SENAI_São_Paulo_logo.png))
+![SENAI Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/SENAI_São_Paulo_logo.png/800px-SENAI_São_Paulo_logo.png)
