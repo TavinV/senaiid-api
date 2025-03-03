@@ -95,7 +95,7 @@ Dúvidas ou suporte? Entre em contato:
 
 A documentação completa das rotas está disponível em breve.
 
----
+<hr>
 
 <p align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/SENAI_São_Paulo_logo.png/800px-SENAI_São_Paulo_logo.png" width="350" title="hover text">
