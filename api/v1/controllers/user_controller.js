@@ -10,7 +10,7 @@ import { createLateEntry, getLateEntries, getLateEntry } from "../services/late_
 //Lib
 import sendMail from "../lib/Emails.js";
 import ApiResponse from '../lib/ApiResponse.js'
-import { minuteDiff, parseTimeToToday } from "../lib/Horarios.js";
+import { minuteDiff } from "../lib/Horarios.js";
 import { criarHash } from "../lib/Criptografar.js";
 
 // Email Templates
@@ -18,10 +18,6 @@ import { email_verification_token_template } from "../templates/email_verificati
 import { update_request_email_template } from "../templates/update_request_pending_template.js";
 import { password_reset_token_template } from '../templates/password_reset_token_template.js';
 import { late_entry_pending_email_template } from "../templates/late_entry_pending_template.js";
-
-// Config
-import config from '../config/config.js';
-
 
 // GET api/v1/users/:id
 const getUser = async (req, res) => {
@@ -117,52 +113,46 @@ const acesso = async (req, res) => {
         return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
     }
 
-    if (user.cargo != "aluno") {
-        const qrCodeURL = generateQRCODE(user)
-        return ApiResponse.OK(res, { url: qrCodeURL })
-    }
-
-    const horarios = config.horarios
-    const expectedEntryTime = parseTimeToToday(user.horario_entrada)
-    const entryLatency = minuteDiff(new Date(), expectedEntryTime)
     const qrCodeURL = generateQRCODE(user)
+    return ApiResponse.OK(res, { url: qrCodeURL })
 
-    const lunchTimeStarts = moment().set({
-        hour: parseInt(horarios.intervalo.inicio.split(":")[0]),
-        minute: parseInt(horarios.intervalo.inicio.split(":")[1])
-    });
+}
 
-    const lunchTimeEnds = moment().set({
-        hour: parseInt(horarios.intervalo.fim.split(":")[0]),
-        minute: parseInt(horarios.intervalo.fim.split(":")[1])
-    });
+// POST api/v1/users/me/late-entries/request-delay
+const pedirAtraso = async (req, res) => {
+    const id = req.decoded.id
+    const [user, findUserError] = await findUserById(id)
 
-    if (entryLatency >= horarios.atraso.min && entryLatency <= horarios.atraso.max) {
-        const [lateEntry, createLateEntryError] = await createLateEntry(user.id)
-        if (createLateEntryError) {
-            return ApiResponse.ERROR(res, `Erro ao registrar o atraso.`, { url: qrCodeURL })
-        }
-
-        const emailHtml = late_entry_pending_email_template(user.nome, lateEntry.id)
-        const [info, sendEmailError] = await sendMail(user.email, `Você está atrasado!`, emailHtml)
-
-        if (sendEmailError) {
-            return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`, { url: qrCodeURL })
-        }
-        return ApiResponse.OK(res, { atrasado: true, codigo_atraso: lateEntry.id, url: qrCodeURL })
+    if (!user && findUserError != 404) {
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
     }
 
-    if (entryLatency >= horarios.tolerancia.min && entryLatency <= horarios.tolerancia.max) {
-        return ApiResponse.OK(res, { atrasado: false, url: qrCodeURL });
+    // Verificando se o usuário já tem um atraso pendente
+    const [lateEntries, getLateEntriesError] = await getLateEntries(user.id)
+    if (getLateEntriesError) {
+        return ApiResponse.ERROR(res, `Erro ao buscar atrasos pendentes: ${getLateEntriesError}`)
     }
 
-    if (moment().isBetween(lunchTimeStarts, lunchTimeEnds)) {
-        return ApiResponse.OK(res, { atrasado: false, url: qrCodeURL });
+    if (lateEntries.length > 0 && lateEntries.some(entry => entry.status === 'Pendente')) {
+        return ApiResponse.ERROR(res, "Você já tem um atraso pendente. Regularize-o antes de solicitar outro.")
     }
 
-    if (entryLatency < horarios.bloqueio.min || entryLatency > horarios.bloqueio.max) {
-        return ApiResponse.UNAUTHORIZED(res, `Você não pode acessar o Senai no momento, seu horário de entrada é ${user.horario_entrada}`)
+    const [lateEntry, createLateEntryError] = await createLateEntry(user.id)
+    if (createLateEntryError) {
+        return ApiResponse.ERROR(res, `Erro ao registrar o atraso.`, { url: qrCodeURL })
     }
+
+    const emailHtml = late_entry_pending_email_template(user.nome, lateEntry.id)
+    const [info, sendEmailError] = await sendMail(user.email, `Seu atraso foi registrado, compareca à secretaria!`, emailHtml)
+
+    if (sendEmailError) {
+        return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`, { url: qrCodeURL })
+    }
+
+    return ApiResponse.OK(res, { codigo_atraso: lateEntry.id }, "Atraso registrado com sucesso. Compareça à secretaria para mais informações.")
+
 }
 
 
@@ -501,4 +491,18 @@ const setupPassword = async (req, res) => {
 
 }
 
-export { getUser, getFotoPerfil, primeiroAcesso, acesso, pedirToken, validarToken, pedirUpdate, forgotPassword, resetPassword, setupPassword, buscarAtrasos, buscarAtraso }
+export {
+    getUser,
+    getFotoPerfil,
+    primeiroAcesso,
+    acesso,
+    pedirToken,
+    validarToken,
+    pedirUpdate,
+    forgotPassword,
+    resetPassword,
+    setupPassword,
+    buscarAtrasos,
+    buscarAtraso,
+    pedirAtraso
+}

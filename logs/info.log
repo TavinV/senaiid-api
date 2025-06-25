@@ -8,3 +8,73 @@
 {"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-02-09T20:44:28.279Z"}
 {"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-02-09T20:45:00.456Z"}
 {"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-02-09T20:45:00.534Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-05-04T03:20:00.852Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-05-04T03:20:01.054Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:20:00.386Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:20:00.469Z"}
+{"level":"info","message":"Password reset token created for user hdv651wqsqom5bgn435","service":"password_reset_services","timestamp":"2025-06-24T18:23:26.637Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:25:00.600Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:25:00.673Z"}
+{"level":"info","message":"User hdv651wqsqom5bgn435 updated","service":"user_services","timestamp":"2025-06-24T18:25:13.134Z"}
+{"level":"info","message":"Password reset token fc7367929041d10898d3ba14d01948419b9089926af8ee4f5ba8baffdd42 deleted","service":"password_reset_services","timestamp":"2025-06-24T18:25:13.153Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:35:00.366Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:35:00.453Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:40:00.824Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:40:00.888Z"}
+{"level":"info","message":"Late entry created for user hdv651wqsqom5bgn435","service":"late_entry_services","timestamp":"2025-06-24T18:41:14.178Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:45:00.189Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:45:00.274Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:50:00.384Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:50:00.439Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T18:55:00.386Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T18:55:00.430Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T19:00:00.425Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T19:00:00.473Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T19:05:00.331Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T19:05:00.387Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T19:10:00.362Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T19:10:00.401Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T19:15:00.640Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T19:15:00.694Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:00:00.166Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:00:00.535Z"}
+{"level":"info","message":"Late entry created for user hdv651wqsqom5bgn435","service":"late_entry_services","timestamp":"2025-06-24T22:03:30.715Z"}
+{"level":"info","message":"Late entry created for user hdv651wqsqom5bgn435","service":"late_entry_services","timestamp":"2025-06-24T22:04:39.118Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:05:00.031Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:05:00.087Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:10:00.185Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:10:00.379Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:15:00.658Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:15:00.730Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:20:00.466Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:20:00.781Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:25:00.901Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:25:01.224Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:30:00.372Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:30:00.448Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:35:00.872Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:35:00.918Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:40:00.639Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:40:00.690Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:45:00.115Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:45:00.151Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:50:00.713Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:50:00.763Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-24T22:55:00.515Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-24T22:55:00.575Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:10:00.886Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:10:01.138Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:15:00.539Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:15:00.626Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:20:00.856Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:20:00.908Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:25:00.285Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:25:00.391Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:30:00.727Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:30:00.782Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:35:00.322Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:35:00.375Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:40:00.004Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:40:00.065Z"}
+{"level":"info","message":"Executando os jobs de manutenção do Banco de Dados","timestamp":"2025-06-25T00:45:00.762Z"}
+{"level":"info","message":"Jobs de manutenção do Banco de Dados executados com sucesso","timestamp":"2025-06-25T00:45:00.848Z"}
