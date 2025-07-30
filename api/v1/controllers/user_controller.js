@@ -118,6 +118,94 @@ const acesso = async (req, res) => {
 
 }
 
+// POST api/v1/users/:id/verify-email/request-token
+const pedirToken = async (req, res) => {
+    const id = req.params.id
+    const { email } = req.body
+
+    if (!id) {
+        return ApiResponse.BADREQUEST(res, "ID do usuário não foi fornecido")
+    }
+    if (!email) {
+        return ApiResponse.BADREQUEST(res, "Email não foi fornecido")
+    }
+
+    const [user, findUserError] = await findUserById(id)
+
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+
+    // Criando o código de verificação
+
+    const [token, createTokenError] = await createToken(user.id, email)
+
+    if (createTokenError) {
+        return ApiResponse.ERROR(res, `Erro ao criar Código de verificação: ${createTokenError}`)
+    }
+
+    // Enviando o código por email
+
+    const emailHtml = email_verification_token_template(email, token)
+    const [info, sendEmailError] = await sendMail(email, `Seu código de verificação é: ${token}`, emailHtml)
+
+    if (!sendEmailError) {
+        return ApiResponse.OK(res, null, "Código de verificação enviado com sucesso.")
+    } else {
+        return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`)
+    }
+
+}
+
+
+// POST api/v1/users/:id/verify-email/validate-token
+const validarToken = async (req, res) => {
+    const id = req.params.id
+    const { token } = req.body
+
+    if (!token) {
+        return ApiResponse.BADREQUEST(res, "Código de verificação não foi fornecido")
+    }
+
+    const [user, findUserError] = await findUserById(id)
+
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+
+    const [tokenData, findTokenError] = await verifyToken(token)
+
+    if (!tokenData) {
+        return ApiResponse.UNAUTHORIZED(res, "Código de verificação inválido ou expirado")
+    }
+
+    const time_diff = minuteDiff(new Date(), tokenData.expires)
+
+    if (time_diff > 10) {
+        deleteToken(tokenData.token)
+        return ApiResponse.UNAUTHORIZED(res, "Código de verificação expirado")
+    }
+
+    const email = tokenData.email
+    const [sucess, updateError] = await updateUser(id, { email: email })
+
+    if (updateError) {
+        return ApiResponse.ERROR(res, `Erro ao atualizar o usuário: ${updateError}`)
+    }
+
+    deleteToken(tokenData.token)
+    return ApiResponse.OK(res, null, "Email verificado com sucesso.")
+
+}
+
 // POST api/v1/users/me/late-entries/request-delay
 const pedirAtraso = async (req, res) => {
     const id = req.decoded.id
@@ -204,94 +292,6 @@ const buscarAtraso = async (req, res) => {
     }
 
     return ApiResponse.OK(res, { lateEntry })
-
-}
-
-// POST api/v1/users/:id/verify-email/request-token
-const pedirToken = async (req, res) => {
-    const id = req.params.id
-    const { email } = req.body
-
-    if (!id) {
-        return ApiResponse.BADREQUEST(res, "ID do usuário não foi fornecido")
-    }
-    if (!email) {
-        return ApiResponse.BADREQUEST(res, "Email não foi fornecido")
-    }
-
-    const [user, findUserError] = await findUserById(id)
-
-    if (!user && findUserError != 404) {
-        // Erro interno do servidor, algum problema com o banco de dados.
-        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
-    } else if (findUserError == 404) {
-        // Usuário não encontrado.
-        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
-    }
-
-    // Criando o código de verificação
-
-    const [token, createTokenError] = await createToken(user.id, email)
-
-    if (createTokenError) {
-        return ApiResponse.ERROR(res, `Erro ao criar Código de verificação: ${createTokenError}`)
-    }
-
-    // Enviando o código por email
-
-    const emailHtml = email_verification_token_template(email, token)
-    const [info, sendEmailError] = await sendMail(email, `Seu código de verificação é: ${token}`, emailHtml)
-
-    if (!sendEmailError) {
-        return ApiResponse.OK(res, null, "Código de verificação enviado com sucesso.")
-    } else {
-        return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`)
-    }
-
-}
-
-
-// POST api/v1/users/:id/verify-email/validate-token
-const validarToken = async (req, res) => {
-    const id = req.params.id
-    const { token } = req.body
-
-    if (!token) {
-        return ApiResponse.BADREQUEST(res, "Código de verificação não foi fornecido")
-    }
-
-    const [user, findUserError] = await findUserById(id)
-
-    if (!user && findUserError != 404) {
-        // Erro interno do servidor, algum problema com o banco de dados.
-        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
-    } else if (findUserError == 404) {
-        // Usuário não encontrado.
-        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
-    }
-
-    const [tokenData, findTokenError] = await verifyToken(token)
-
-    if (!tokenData) {
-        return ApiResponse.UNAUTHORIZED(res, "Código de verificação inválido ou expirado")
-    }
-
-    const time_diff = minuteDiff(new Date(), tokenData.expires)
-
-    if (time_diff > 10) {
-        deleteToken(tokenData.token)
-        return ApiResponse.UNAUTHORIZED(res, "Código de verificação expirado")
-    }
-
-    const email = tokenData.email
-    const [sucess, updateError] = await updateUser(id, { email: email })
-
-    if (updateError) {
-        return ApiResponse.ERROR(res, `Erro ao atualizar o usuário: ${updateError}`)
-    }
-
-    deleteToken(tokenData.token)
-    return ApiResponse.OK(res, null, "Email verificado com sucesso.")
 
 }
 

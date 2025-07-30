@@ -16,7 +16,7 @@ const createLateEntry = async (user_id) => {
     }
 }
 
-const validateLateEntry = async (late_entry_id, responsiblePerson, reason) => {
+const validateLateEntry = async (late_entry_id, responsiblePerson, reason, observation) => {
     let foundLateEntry = await lateEntry.findOne({ id: late_entry_id })
 
     if (!foundLateEntry) {
@@ -24,7 +24,7 @@ const validateLateEntry = async (late_entry_id, responsiblePerson, reason) => {
     }
 
     try {
-        const result = await lateEntry.findOneAndUpdate({ id: late_entry_id }, { responsavel: responsiblePerson, motivo: reason, status: 'Validado' })
+        const result = await lateEntry.findOneAndUpdate({ id: late_entry_id }, { responsavel: responsiblePerson, motivo: reason, status: 'Validado', observacao: observation || "" })
         const updated = await lateEntry.findOne({ id: late_entry_id })
 
         return [updated, null]

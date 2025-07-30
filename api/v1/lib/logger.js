@@ -10,7 +10,11 @@ const rejections = path.join(logsFilePath, 'rejection.log')
 const logger = winston.createLogger({
     level: process.env.LOG_LEVEL || 'info',
     format: combine(timestamp(), errors({ stack: true }), json()),
-    transports: [new winston.transports.File({ filename: info }),],
+    transports: [
+        new winston.transports.File({ filename: info }),
+        new winston.transports.Console({
+            format: combine(timestamp(), errors({ stack: true }), winston.format.simple())
+        })],
     exceptionHandlers: [new winston.transports.File({ filename: exceptions })],
     rejectionHandlers: [new winston.transports.File({ filename: rejections })],
 })

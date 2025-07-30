@@ -26,7 +26,13 @@ const lateEntrySchema = mongoose.Schema(
             required: true,
             default: "",
             sparse: true
-        }
+        },
+        observacao: {
+            type: String,
+            required: true,
+            default: "",
+            sparse: true
+        },
     },
     {
         timestamps: true,

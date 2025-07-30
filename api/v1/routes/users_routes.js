@@ -1,6 +1,6 @@
 import express from 'express'
 import validateSessionToken from '../middlewares/JWT_Auth.js'
-import { getUser, getFotoPerfil, primeiroAcesso, acesso, pedirToken, validarToken, pedirUpdate, forgotPassword, resetPassword, setupPassword, buscarAtrasos, buscarAtraso, pedirAtraso } from '../controllers/user_controller.js'
+import { getUser, getFotoPerfil, primeiroAcesso, acesso, pedirToken, validarToken, pedirUpdate, forgotPassword, resetPassword, setupPassword } from '../controllers/user_controller.js'
 
 const router = express.Router()
 
