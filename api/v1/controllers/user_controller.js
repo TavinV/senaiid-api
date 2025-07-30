@@ -6,6 +6,7 @@ import { createToken, verifyToken, deleteToken } from "../services/email_token_s
 import { createUpdateRequest } from "../services/update_request_services.js";
 import { createPasswordResetToken, deletePasswordResetToken, verifyPasswordResetToken } from "../services/password_reset_services.js";
 import { createLateEntry, getLateEntries, getLateEntry } from "../services/late_entry_services.js";
+import { getEarlyExit, getEarlyExitsByUser, requestEarlyExit } from "../services/early_exit_services.js";
 
 //Lib
 import sendMail from "../lib/Emails.js";
@@ -18,6 +19,7 @@ import { email_verification_token_template } from "../templates/email_verificati
 import { update_request_email_template } from "../templates/update_request_pending_template.js";
 import { password_reset_token_template } from '../templates/password_reset_token_template.js';
 import { late_entry_pending_email_template } from "../templates/late_entry_pending_template.js";
+import { early_exit_pending_template } from "../templates/early_exit_pending_template.js";
 
 // GET api/v1/users/:id
 const getUser = async (req, res) => {
@@ -224,7 +226,7 @@ const pedirAtraso = async (req, res) => {
     }
 
     if (lateEntries.length > 0 && lateEntries.some(entry => entry.status === 'Pendente')) {
-        return ApiResponse.ERROR(res, "Você já tem um atraso pendente. Regularize-o antes de solicitar outro.")
+        return ApiResponse.FORBIDDEN(res, "Você já tem um atraso pendente. Regularize-o antes de solicitar outro.")
     }
 
     const [lateEntry, createLateEntryError] = await createLateEntry(user.id)
@@ -491,6 +493,106 @@ const setupPassword = async (req, res) => {
 
 }
 
+// POST api/v1/users/me/early-exits/request
+const pedirSaidaAntecipada = async (req, res) => {
+    const { motivo, horario_saida } = req.body;
+    const user_id = req.decoded.id;
+    const [user, findUserError] = await findUserById(user_id)
+
+    if (!user && findUserError != 404) {
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+
+
+    if (!motivo || motivo.trim() === "" || !horario_saida) {
+        return ApiResponse.BADREQUEST(res, "Motivo e horário de saída são obrigatórios.");
+    }
+
+    // Cria o Date com hoje + horário fornecido
+    const saidaDate = new Date(new Date().setHours(...horario_saida.split(':').map(Number), 0, 0));
+
+
+    // Verificando se o usuário já tem um atraso pendente
+    const [earlyExits, getEarlyExitsError] = await getEarlyExitsByUser(user_id);
+    if (getEarlyExitsError) {
+        return ApiResponse.ERROR(res, `Erro ao buscar pedidos de liberação pendentes: ${getLateEntriesError}`)
+    }
+
+    const [earlyExit, createEarlyExitError] = await requestEarlyExit(user_id, motivo, saidaDate);
+    if (createEarlyExitError) {
+        return ApiResponse.ERROR(res, `Erro ao requerer pedido de liberação: ${createEarlyExitError}`);
+    }
+
+
+    if (earlyExits.length > 0 && earlyExits.some(entry => entry.status === 'Pendente')) {
+        console.log(earlyExits)
+        return ApiResponse.ERROR(res, "Você já tem um pedido de liberação em análise. Espere a resposta antes de solicitar outro.")
+    }
+
+    // Envia o email de confirmação
+    const emailHtml = early_exit_pending_template(earlyExit.id, user.nome, earlyExit.motivo);
+    const [info, sendEmailError] = await sendMail(user.email, `Seu pedido de liberação foi feito`, emailHtml);
+
+    if (sendEmailError) {
+        return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`);
+    }
+
+    return ApiResponse.OK(res, earlyExit, "Pedido de liberação solicitado com sucesso.");
+};
+
+// GET api/v1/users/me/early-exits
+const buscarSaidasAntecipadas = async (req, res) => {
+    const user_id = req.decoded.id;
+    const [user, findUserError] = await findUserById(user_id)
+
+    if (!user && findUserError != 404) {
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+
+    const [earlyExits, getEarlyExitsError] = await getEarlyExitsByUser(user_id);
+    if (getEarlyExitsError) {
+        return ApiResponse.ERROR(res, `Erro ao buscar pedidos de liberação: ${getEarlyExitsError}`);
+    }
+
+    return ApiResponse.OK(res, { earlyExits });
+};
+
+// GET api/v1/users/me/early-exits/:id
+const buscarSaidaAntecipada = async (req, res) => {
+    const user_id = req.decoded.id;
+    const early_exit_id = req.params.id;
+
+    if (!early_exit_id) {
+        return ApiResponse.BADREQUEST(res, "ID da liberação não foi fornecido.");
+    }
+
+    const [user, findUserError] = await findUserById(user_id)
+
+    if (!user && findUserError != 404) {
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`)
+    } else if (findUserError == 404) {
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+
+    const [earlyExit, getEarlyExitError] = await getEarlyExit(early_exit_id);
+
+    if (!earlyExit && getEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, `Pedido de liberação: ${early_exit_id} não encontrado.`);
+    } else if (getEarlyExitError) {
+        return ApiResponse.ERROR(res, `Erro ao buscar o pedido liberação: ${getEarlyExitError}`);
+    }
+
+    if (earlyExit.user_id !== user_id) {
+        return ApiResponse.FORBIDDEN(res, "Você não tem permissão para visualizar este pedido de liberação.");
+    }
+
+    return ApiResponse.OK(res, { earlyExit });
+}
+
 export {
     getUser,
     getFotoPerfil,
@@ -504,5 +606,8 @@ export {
     setupPassword,
     buscarAtrasos,
     buscarAtraso,
-    pedirAtraso
+    pedirAtraso,
+    pedirSaidaAntecipada,
+    buscarSaidasAntecipadas,
+    buscarSaidaAntecipada
 }

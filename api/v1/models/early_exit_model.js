@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const earlyExitSchema = new mongoose.Schema(
     {
+        id: {
+            type: String,
+            required: true
+        },
         user_id: {
             type: String,
             required: true
@@ -14,8 +18,6 @@ const earlyExitSchema = new mongoose.Schema(
         motivo: {
             type: String,
             required: true,
-            default: "",
-            sparse: true
         },
         responsavel: {
             type: String,

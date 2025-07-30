@@ -1,0 +1,100 @@
+Date : 2025-07-30 19:57:01
+Directory : c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api
+Total : 57 files,  6807 codes, 128 comments, 604 blanks, all 7539 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         49 |      3,567 |        128 |        561 |      4,256 |
+| JSON       |          4 |      2,741 |          0 |          1 |      2,742 |
+| Log        |          3 |        427 |          0 |          3 |        430 |
+| Markdown   |          1 |         72 |          0 |         39 |        111 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                  | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                     |         57 |      6,807 |        128 |        604 |      7,539 |
+| . (Files)                                                                                                             |          4 |      2,793 |          0 |         40 |      2,833 |
+| api                                                                                                                   |         50 |      3,587 |        128 |        561 |      4,276 |
+| api\v1                                                                                                                |         50 |      3,587 |        128 |        561 |      4,276 |
+| api\v1 (Files)                                                                                                        |          3 |         66 |          4 |         18 |         88 |
+| api\v1\auth                                                                                                           |          1 |         21 |          0 |          6 |         27 |
+| api\v1\config                                                                                                         |          2 |         46 |          0 |          4 |         50 |
+| api\v1\controllers                                                                                                    |          3 |        747 |        102 |        287 |      1,136 |
+| api\v1\jobs                                                                                                           |          2 |         55 |          0 |         17 |         72 |
+| api\v1\lib                                                                                                            |          6 |        162 |          3 |         34 |        199 |
+| api\v1\middlewares                                                                                                    |          3 |         70 |         10 |         27 |        107 |
+| api\v1\models                                                                                                         |          6 |        264 |          2 |         17 |        283 |
+| api\v1\routes                                                                                                         |          6 |        150 |          4 |         47 |        201 |
+| api\v1\services                                                                                                       |          6 |        392 |          3 |         89 |        484 |
+| api\v1\templates                                                                                                      |         11 |      1,582 |          0 |         12 |      1,594 |
+| api\v1\validation                                                                                                     |          1 |         32 |          0 |          3 |         35 |
+| logs                                                                                                                  |          3 |        427 |          0 |          3 |        430 |
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                              | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\README.md                                               | Markdown   |         72 |          0 |         39 |        111 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\Senai Id.postman_collection.json                        | JSON       |        955 |          0 |          0 |        955 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\app.js                                           | JavaScript |         22 |          1 |          6 |         29 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\auth\JWT_services.js                             | JavaScript |         21 |          0 |          6 |         27 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\config\config.js                                 | JavaScript |         26 |          0 |          4 |         30 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\config\senai-id-config.json                      | JSON       |         20 |          0 |          0 |         20 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\controllers\login_controller.js                  | JavaScript |         15 |          3 |          6 |         24 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\controllers\secretaria_controller.js             | JavaScript |        335 |         39 |        127 |        501 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\controllers\user_controller.js                   | JavaScript |        397 |         60 |        154 |        611 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\job_runner.js                                    | JavaScript |         30 |          2 |          8 |         40 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\jobs\expired_tokens_job.js                       | JavaScript |         36 |          0 |         12 |         48 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\jobs\late_entrys_job.js                          | JavaScript |         19 |          0 |          5 |         24 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\ApiResponse.js                               | JavaScript |         75 |          0 |          9 |         84 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\Criptografar.js                              | JavaScript |         18 |          0 |          6 |         24 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\Emails.js                                    | JavaScript |         27 |          0 |          6 |         33 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\Horarios.js                                  | JavaScript |         11 |          3 |          7 |         21 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\MongoDB_Connection.js                        | JavaScript |         12 |          0 |          3 |         15 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\lib\logger.js                                    | JavaScript |         19 |          0 |          3 |         22 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\middlewares\JWT_Auth.js                          | JavaScript |         32 |          2 |         11 |         45 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\middlewares\multer.js                            | JavaScript |         19 |          1 |          6 |         26 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\middlewares\validatebody.js                      | JavaScript |         19 |          7 |         10 |         36 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\early_exit_model.js                       | JavaScript |         46 |          0 |          2 |         48 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\email_verification_token_model.js         | JavaScript |         26 |          0 |          3 |         29 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\forgot_password_token_model.js            | JavaScript |         22 |          0 |          3 |         25 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\late_entry_model.js                       | JavaScript |         42 |          0 |          3 |         45 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\user_model.js                             | JavaScript |         93 |          2 |          4 |         99 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\models\user_update_request_model.js              | JavaScript |         35 |          0 |          2 |         37 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\login_routes.js                           | JavaScript |          5 |          0 |          2 |          7 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\logs_routes.js                            | JavaScript |         32 |          4 |          9 |         45 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\secretaria_routes.js                      | JavaScript |         19 |          0 |          8 |         27 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\support_routes.js                         | JavaScript |         19 |          0 |          8 |         27 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\test_routes.js                            | JavaScript |         54 |          0 |         15 |         69 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\routes\users_routes.js                           | JavaScript |         21 |          0 |          5 |         26 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\server.js                                        | JavaScript |         14 |          1 |          4 |         19 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\early_exit_services.js                  | JavaScript |         95 |          0 |         12 |        107 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\email_token_services.js                 | JavaScript |         28 |          0 |          7 |         35 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\late_entry_services.js                  | JavaScript |         69 |          0 |         19 |         88 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\password_reset_services.js              | JavaScript |         29 |          0 |         10 |         39 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\update_request_services.js              | JavaScript |         55 |          0 |         15 |         70 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\services\user_services.js                        | JavaScript |        116 |          3 |         26 |        145 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\early_exit_approved_template.js        | JavaScript |        187 |          0 |          1 |        188 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\early_exit_pending_template.js         | JavaScript |        164 |          0 |          1 |        165 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\early_exit_rejected_template.js        | JavaScript |        177 |          0 |          1 |        178 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\email_verification_token_template.js   | JavaScript |        135 |          0 |          1 |        136 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\late_entry_pending_template.js         | JavaScript |        157 |          0 |          1 |        158 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\late_entry_validated_template.js       | JavaScript |        121 |          0 |          1 |        122 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\password_reset_token_template.js       | JavaScript |        162 |          0 |          1 |        163 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\support_email_notification_template.js | JavaScript |         81 |          0 |          2 |         83 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\update_request_approved_template.js    | JavaScript |        134 |          0 |          1 |        135 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\update_request_denied.js               | JavaScript |        132 |          0 |          1 |        133 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\templates\update_request_pending_template.js     | JavaScript |        132 |          0 |          1 |        133 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\api\v1\validation\user_schemas.js                       | JavaScript |         32 |          0 |          3 |         35 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\logs\exception.log                                      | Log        |          9 |          0 |          1 |         10 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\logs\info.log                                           | Log        |        412 |          0 |          1 |        413 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\logs\rejection.log                                      | Log        |          6 |          0 |          1 |          7 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\package-lock.json                                       | JSON       |      1,741 |          0 |          1 |      1,742 |
+| c:\Users\otavi\OneDrive\Área de Trabalho\Projetos\senaiid-api\package.json                                            | JSON       |         25 |          0 |          0 |         25 |
+| Total                                                                                                                 |            |      6,807 |        128 |        604 |      7,539 |
++-----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

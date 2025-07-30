@@ -1,4 +1,4 @@
-export const request_approved_template = (request_id, user_name) => {
+export const approved_request_email_template = (request_id, user_name) => {
     const html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>

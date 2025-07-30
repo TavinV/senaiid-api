@@ -1,14 +1,15 @@
 // Services
 import { findUserById, updateUser, createUser, deleteUser, findUserPFP } from "../services/user_services.js";
-import { createUpdateRequest, findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest } from "../services/update_request_services.js";
-import { validateLateEntry, getLateEntries, getLateEntry } from "../services/late_entry_services.js";
+import { findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest } from "../services/update_request_services.js";
+import { validateLateEntry, getLateEntries, getLateEntry, deleteLateEntry } from "../services/late_entry_services.js";
+import { getEarlyExit, deleteEarlyExit, allowEarlyExit, denyEarlyExit } from "../services/early_exit_services.js";
 
 //Lib
 import sendMail from "../lib/Emails.js";
 import ApiResponse from '../lib/ApiResponse.js';
 import { cripografarSenhaUsuario } from "../lib/Criptografar.js";
 import fs from 'fs'
-import moment from "moment";
+import moment from "moment-timezone";
 import logger from "../lib/logger.js";
 
 // Schemas
@@ -18,6 +19,8 @@ import { updateUserSchema } from '../validation/user_schemas.js';
 import { approved_request_email_template } from "../templates/update_request_approved_template.js";
 import { rejected_request_email_template } from "../templates/update_request_denied.js";
 import { late_entry_approved_email_template } from "../templates/late_entry_validated_template.js";
+import { early_exit_rejected_template } from "../templates/early_exit_rejected_template.js";
+import { early_exit_approved_template } from "../templates/early_exit_approved_template.js";
 
 // POST api/v1/secretaria/register/student
 const registrarAluno = async (req, res) => {
@@ -336,4 +339,163 @@ const atrasosDeUmAluno = async (req, res) => {
     return ApiResponse.OK(res, { atrasos }, `Atrasos do aluno ${user.nome}.`)
 }
 
-export { registrarAluno, registrarFuncionario, atualizarUsuario, deletarUsuario, aprovarPedido, rejeitarPedido, validarAtraso, atrasosDeUmAluno }
+// DEL api/v1/secretaria/late-entries/:id
+const deletarAtraso = async (req, res) => {
+    const id = req.params.id
+
+    if (!id) {
+        return ApiResponse.BADREQUEST(res, "O id do atraso é obrigatório.")
+    }
+
+    const [foundLateEntry, findLateEntryError] = await getLateEntry(id)
+
+    if (!foundLateEntry && findLateEntryError == 404) {
+        return ApiResponse.NOTFOUND(res, "Registro de atraso não encontrado.")
+    } else if (!foundLateEntry && findLateEntryError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    const [deleted, deleteLateEntryError] = await deleteLateEntry(id)
+
+    if (!deleted && deleteLateEntryError == 404) {
+        return ApiResponse.NOTFOUND(res, "Atraso não encontrado.")
+    } else if (!deleted && deleteLateEntryError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    return ApiResponse.DELETED(res, "Atraso deletado com sucesso!")
+}
+
+// PUT api/v1/secretaria/early-exits/:id/allow
+const validarSaidaAntecipada = async (req, res) => {
+    const id = req.params.id
+    const { responsavel, observacao } = req.body
+
+    if (!responsavel || !observacao) {
+        return ApiResponse.BADREQUEST(res, "O responsável e a observação são obrigatórios.")
+    }
+
+    const [earlyExit, findEarlyExitError] = await getEarlyExit(id)
+
+    if (!earlyExit && findEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!earlyExit && findEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    if (earlyExit.status != "Pendente") {
+        return ApiResponse.BADREQUEST(res, `O pedido de liberação não pode ser validado, seu status é de ${earlyExit.status}`)
+    }
+
+    const [result, allowEarlyExitError] = await allowEarlyExit(id, responsavel, observacao)
+
+    if (!result && allowEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!result && allowEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    // Saída antecipada validada, iremos notificar o usuario
+    const [user, findUserError] = await findUserById(result.user_id)
+
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`, { "error": findUserError })
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário associado ao pedido de liberação não foi encontrado.")
+    }
+
+    const email = user.email
+    const emailHtml = early_exit_approved_template(earlyExit.id, user.nome, earlyExit.motivo, responsavel, moment(earlyExit.horario_saida).tz("America/Sao_Paulo").format("DD/MM/YYYY - HH:mm"), observacao)
+
+    const [info, sendEmailError] = await sendMail(email, `Pedido de liberação aprovado!`, emailHtml)
+    if (sendEmailError) {
+        return ApiResponse.ERROR(res, `Erro ao enviar email.`)
+    }
+
+    return ApiResponse.OK(res, { result }, "Pedido de liberação validado!")
+
+}
+
+// PUT api/v1/secretaria/early-exits/:id/deny
+const negarSaidaAntecipada = async (req, res) => {
+    const id = req.params.id
+    const { responsavel, observacao } = req.body
+
+    if (!responsavel || !observacao) {
+        return ApiResponse.BADREQUEST(res, "O responsável e a observação são obrigatórios.")
+    }
+
+    const [earlyExit, findEarlyExitError] = await getEarlyExit(id)
+
+    if (!earlyExit && findEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!earlyExit && findEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    if (earlyExit.status != "Pendente") {
+        return ApiResponse.BADREQUEST(res, `O pedido de liberação não pode ser negado, seu status é de ${earlyExit.status}`)
+    }
+
+    const [result, denyEarlyExitError] = await denyEarlyExit(id, responsavel, observacao)
+
+    if (!result && denyEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!result && denyEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    // Saída antecipada validada, iremos notificar o usuario
+    const [user, findUserError] = await findUserById(result.user_id)
+
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor.`, { "error": findUserError })
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário associado ao pedido de liberação não foi encontrado.")
+    }
+
+    const email = user.email
+    const emailHtml = early_exit_rejected_template(earlyExit.id, user.nome, earlyExit.motivo, responsavel, observacao)
+
+    const [info, sendEmailError] = await sendMail(email, `Pedido de liberação negado!`, emailHtml)
+    if (sendEmailError) {
+        return ApiResponse.ERROR(res, `Erro ao enviar email.`)
+    }
+
+    return ApiResponse.OK(res, null, "Pedido de liberação negado!")
+
+}
+
+// DEL api/v1/secretaria/early-exits/:id
+const deletarSaidaAntecipada = async (req, res) => {
+    const id = req.params.id
+
+    if (!id) {
+        return ApiResponse.BADREQUEST(res, "O id do pedido de liberação é obrigatório.")
+    }
+
+    const [earlyExit, findEarlyExitError] = await getEarlyExit(id)
+
+    if (!earlyExit && findEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!earlyExit && findEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    const [deleted, deleteEarlyExitError] = await deleteEarlyExit(id)
+
+    if (!deleted && deleteEarlyExitError == 404) {
+        return ApiResponse.NOTFOUND(res, "Pedido de liberação não encontrado.")
+    } else if (!deleted && deleteEarlyExitError != 404) {
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    return ApiResponse.DELETED(res, "Pedido de liberação deletado com sucesso!")
+}
+
+
+export { registrarAluno, registrarFuncionario, atualizarUsuario, deletarUsuario, aprovarPedido, rejeitarPedido, validarAtraso, atrasosDeUmAluno, deletarAtraso, validarSaidaAntecipada, negarSaidaAntecipada, deletarSaidaAntecipada }

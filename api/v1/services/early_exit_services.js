@@ -1,15 +1,18 @@
-import { EarlyExit } from '../models/early_exit_model.js'
+import EarlyExit from '../models/early_exit_model.js'
 
 import logger from '../lib/logger.js'
 const childLogger = logger.child({ service: "early_exit_services" })
 
-const requestEarlyExit = async (user_id, motivo) => {
+const requestEarlyExit = async (user_id, motivo, horario_saida) => {
     const lateEntryId = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 62)]).join('');
     try {
-        const earlyExit = EarlyExit.create({
+        const earlyExit = await EarlyExit.create({
             user_id,
             id: lateEntryId,
             motivo,
+            horario_saida,
+            responsavel: "-",
+            observacao: "-",
         })
         childLogger.info(`Early exit requested for user ${user_id}`)
         return [earlyExit, null]
@@ -32,6 +35,7 @@ const getEarlyExit = async (early_exit_id) => {
         return [null, 500]
     }
 }
+
 
 const allowEarlyExit = async (early_exit_id, responsavel, observacao) => {
     try {
@@ -69,7 +73,7 @@ const denyEarlyExit = async (early_exit_id, responsavel, observacao) => {
     }
 }
 
-const getEarlyExits = async (user_id) => {
+const getEarlyExitsByUser = async (user_id) => {
     try {
         const earlyExits = await EarlyExit.find({ user_id })
         return [earlyExits, null]
@@ -98,6 +102,6 @@ export {
     getEarlyExit,
     allowEarlyExit,
     denyEarlyExit,
-    getEarlyExits,
-    deleteEarlyExit
+    getEarlyExitsByUser,
+    deleteEarlyExit,
 }

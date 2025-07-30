@@ -55,7 +55,7 @@ const closeLateEntry = async (late_entry_id) => {
         return [null, 404]
     }
     try {
-        const result = await lateEntry.findOneAndUpdate({ id: late_entry_id }, { status: 'Não informado' })
+        const result = await lateEntry.findOneAndUpdate({ id: late_entry_id }, { status: 'Fechado' })
         return [result, null]
     } catch (error) {
         childLogger.error(`Error closing late entry ${late_entry_id}`, error)
@@ -64,4 +64,25 @@ const closeLateEntry = async (late_entry_id) => {
 
 }
 
-export { createLateEntry, validateLateEntry, getLateEntries, getLateEntry, closeLateEntry }
+const deleteLateEntry = async (late_entry_id) => {
+    let foundLateEntry = await lateEntry.findOne({ id: late_entry_id })
+    if (!foundLateEntry) {
+        return [null, 404]
+    }
+    try {
+        const result = await lateEntry.deleteOne({ id: late_entry_id })
+
+        if (result.deletedCount === 0) {
+            return [null, 404]
+        }
+
+        return [result, null]
+    } catch (error) {
+        childLogger.error(`Error deleting late entry ${late_entry_id}`, error)
+        return [null, 500]
+    }
+
+}
+
+
+export { createLateEntry, validateLateEntry, getLateEntries, getLateEntry, closeLateEntry, deleteLateEntry }
