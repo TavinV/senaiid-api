@@ -226,22 +226,30 @@ const pedirAtraso = async (req, res) => {
     }
 
     if (lateEntries.length > 0 && lateEntries.some(entry => entry.status === 'Pendente')) {
-        return ApiResponse.FORBIDDEN(res, "Você já tem um atraso pendente. Regularize-o antes de solicitar outro.")
+        return ApiResponse.ALREADYEXISTS(res, "Você já tem um atraso pendente. Regularize-o antes de solicitar outro.")
     }
 
-    const [lateEntry, createLateEntryError] = await createLateEntry(user.id)
-    if (createLateEntryError) {
-        return ApiResponse.ERROR(res, `Erro ao registrar o atraso.`, { url: qrCodeURL })
+    try {
+        const [lateEntry, createLateEntryError] = await createLateEntry(user.id)
+
+        if (createLateEntryError) {
+            return ApiResponse.ERROR(res, `Erro ao registrar o atraso.`)
+        }
+
+        const emailHtml = late_entry_pending_email_template(user.nome, lateEntry.id)
+        const [info, sendEmailError] = await sendMail(user.email, `Seu atraso foi registrado, compareca à secretaria!`, emailHtml)
+
+        if (sendEmailError) {
+            return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`)
+        }
+
+        return ApiResponse.CREATED(res, { codigo_atraso: lateEntry.id }, "Atraso registrado com sucesso. Compareça à secretaria para mais informações.")
+
+
+    } catch (e) {
+        console.error(e)
+        return ApiResponse.ERROR(res, `Erro ao registrar o atraso: ${e.message}`)
     }
-
-    const emailHtml = late_entry_pending_email_template(user.nome, lateEntry.id)
-    const [info, sendEmailError] = await sendMail(user.email, `Seu atraso foi registrado, compareca à secretaria!`, emailHtml)
-
-    if (sendEmailError) {
-        return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`, { url: qrCodeURL })
-    }
-
-    return ApiResponse.OK(res, { codigo_atraso: lateEntry.id }, "Atraso registrado com sucesso. Compareça à secretaria para mais informações.")
 
 }
 

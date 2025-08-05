@@ -12,7 +12,7 @@ const lateEntryJob = async () => {
         const pendingEntries = await lateEntry.find({ status: "Pendente" })
 
         for (const entry of pendingEntries) {
-            if (minuteDiff(entry.createdAt, now) > 1) {
+            if (minuteDiff(entry.createdAt, now) > 60) { // 
                 closeLateEntry(entry.id)
             }
         }

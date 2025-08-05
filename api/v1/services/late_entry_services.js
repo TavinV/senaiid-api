@@ -6,7 +6,7 @@ const createLateEntry = async (user_id) => {
     const lateEntryId = Array.from({ length: 8 }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 62)]).join('');
 
     try {
-        const newEntry = await lateEntry.create({ id: lateEntryId, user_id, responsavel: "-", motivo: "-" })
+        const newEntry = await lateEntry.create({ id: lateEntryId, user_id, responsavel: "-", motivo: "-", observacao: "-" })
         childLogger.info(`Late entry created for user ${user_id}`)
 
         return [newEntry, null]
