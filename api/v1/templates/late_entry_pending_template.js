@@ -120,7 +120,6 @@ export const late_entry_pending_email_template = (nome, qrCode) => {
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>AVISO DE ATRASO</h1>
         </div>
 
         <div class="email-content">

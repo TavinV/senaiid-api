@@ -1,6 +1,7 @@
 import express from 'express'
 import validateSessionToken from '../middlewares/JWT_Auth.js'
 import upload from '../middlewares/multer.js'
+import User from '../models/user_model.js'
 import { validarAluno, validarFuncionario } from '../middlewares/validatebody.js'
 
 import { deletarUsuario, registrarAluno, registrarFuncionario, atualizarUsuario, aprovarPedido, rejeitarPedido, validarAtraso, atrasosDeUmAluno, deletarAtraso, validarSaidaAntecipada, negarSaidaAntecipada, deletarSaidaAntecipada } from '../controllers/secretaria_controller.js'
@@ -12,7 +13,7 @@ router.get('/late-entries/:id', validateSessionToken(true), atrasosDeUmAluno)
 router.post('/register/student', validateSessionToken(true), upload.single("foto_perfil"), validarAluno, registrarAluno)
 router.post('/register/employee', validateSessionToken(true), upload.single("foto_perfil"), validarFuncionario, registrarFuncionario)
 
-router.post('/late-entries/:id/validate', validateSessionToken(true), validarAtraso)
+router.put('/late-entries/:id/validate', validateSessionToken(true), validarAtraso)
 
 router.delete('/:id', validateSessionToken(true), deletarUsuario)
 router.delete('/late-entries/:id', validateSessionToken(true), deletarAtraso)

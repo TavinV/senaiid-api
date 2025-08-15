@@ -24,6 +24,15 @@ const findUserById = async (id) => {
     }
 };
 
+const findAllUsers = async () => {
+    try {
+        const users = await User.find({});
+        return [users, null];
+    } catch (error) {
+        return [null, error];
+    }
+};
+
 const findUserByEmail = async (email) => {
 
     try {
@@ -37,48 +46,68 @@ const findUserByEmail = async (email) => {
     }
 }
 
-const validateUserLogin = async (loginFornecido, senha) => {
+const validateUserLogin = async (identificador, senha) => {
     try {
-        const alunoComLogin = await User.findOne({ login: loginFornecido });
-        if (alunoComLogin) {
-            const senhaCriptografada = criarHash(senha, alunoComLogin.salt)
+        // Determina o campo de busca baseado no formato do identificador
+        const query = identificador.startsWith('secretaria')
+            ? { login_secretaria: identificador }
+            : { cpf: identificador };
 
-            if (senhaCriptografada === alunoComLogin.senha) {
-                return [alunoComLogin, null]
-            }
-            return [null, 401]
+        const usuario = await User.findOne(query);
+
+        if (!usuario) {
+            return [null, 404]; // Usuário não encontrado
         }
-        return [null, 404]
+
+        const senhaCriptografada = criarHash(senha, usuario.salt);
+
+        if (senhaCriptografada === usuario.senha) {
+            return [usuario, null]; // Autenticação bem-sucedida
+        }
+
+        return [null, 401]; // Senha incorreta
 
     } catch (error) {
-        return [null, error]
+        return [null, error];
     }
-}
+};
 
 const findUserPFP = async (user) => {
-    // Diretório aonde estão as fotos de perfil
+    try {
+        // Normaliza o identificador do usuário (remove caracteres especiais)
+        const userIdentifier = user.cpf ? user.cpf.replace(/[.\-]/g, '') : user.id;
 
-    let filename = ''
+        // Formatos de imagem suportados (em ordem de prioridade)
+        const supportedFormats = ['.png', '.jpg', '.jpeg', '.gif', '.webp'];
+        const basePath = path.join(__dirname, '../../../db/fotos_perfil/');
 
-    switch (user.cargo) {
-        case "aluno":
-            filename = user.matricula
-            break
-        case "funcionario":
-            filename = user.nif
-            break
+        // Padrões de nome de arquivo possíveis
+        const possiblePatterns = [
+            `${userIdentifier}_pfp`,  // Padrão atual
+            userIdentifier,           // Apenas o ID/CPF
+            `user_${userIdentifier}`  // Outro padrão comum
+        ];
+
+        // Verifica cada combinação de padrão e formato
+        for (const pattern of possiblePatterns) {
+            for (const format of supportedFormats) {
+                const filePath = path.join(basePath, `${pattern}${format}`);
+
+                if (fs.existsSync(filePath)) {
+                    return [filePath, null]; // Retorna o primeiro arquivo encontrado
+                }
+            }
+        }
+
+        // Se nenhum arquivo for encontrado
+        return [null, 404];
+
+    } catch (error) {
+        console.error('Erro ao buscar foto de perfil:', error);
+        return [null, 500];
     }
+};
 
-    const basePath = path.join(__dirname, '../../../db/fotos_perfil/')
-    const filePath = path.join(basePath, `${filename}_pfp.png`)
-
-    // Verificando se o arquivo nomeArquivo existe
-    if (fs.existsSync(filePath)) {
-        return [filePath, null]
-    } else {
-        return [null, 404]
-    }
-}
 
 const generateQRCODE = (user) => {
     let accessKey = ""
@@ -142,4 +171,4 @@ const deleteUser = async (user_id) => {
     }
 }
 
-export { findUserById, validateUserLogin, findUserPFP, generateQRCODE, updateUser, createUser, deleteUser, findUserByEmail }
+export { findUserById, validateUserLogin, findUserPFP, generateQRCODE, updateUser, createUser, deleteUser, findUserByEmail, findAllUsers }

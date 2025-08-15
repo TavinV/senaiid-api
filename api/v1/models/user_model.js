@@ -11,11 +11,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Nome é obrigatório"]
         },
-        login: {
-            type: String,
-            required: [true, "Login é obrigatório"],
-            unique: true
-        },
         senha: {
             type: String,
             required: [true, "Senha é obrigatório"]
@@ -24,11 +19,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Cargo é obrigatório"],
             enum: ["aluno", "funcionario", "secretaria"]
-        },
-        rg: {
-            type: String,
-            unique: true,
-            sparse: true
         },
         salt: {
             type: String,
@@ -51,9 +41,6 @@ const userSchema = new mongoose.Schema(
         turma: {
             type: String // Apenas para alunos
         },
-        horario_entrada: {
-            type: String // Apenas para alunos
-        },
         matricula: {
             type: String,
             unique: true, // Apenas para alunos
@@ -73,8 +60,13 @@ const userSchema = new mongoose.Schema(
         },
         cpf: {
             type: String,
-            sparse: true,
-            unique: true // Apenas para funcionários
+            unique: true,
+            sparse: true  // Permite null para secretaria
+        },
+        login_secretaria: {
+            type: String,
+            unique: true,
+            sparse: true  // Permite null para outros usuários
         },
         pis: {
             type: String, // Apenas para funcionários

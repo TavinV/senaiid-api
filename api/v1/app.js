@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Rotas
 import user_routes from './routes/users_routes.js'
 import login_routes from './routes/login_routes.js'
-import test_routes from './routes/test_routes.js'
 import secretaria from './routes/secretaria_routes.js'
 import support from './routes/support_routes.js'
 import logs from './routes/logs_routes.js'
@@ -22,7 +21,6 @@ import logs from './routes/logs_routes.js'
 app.use("/api/v1/secretaria", secretaria)
 app.use("/api/v1/users", user_routes)
 app.use("/api/v1/login", login_routes)
-app.use("/api/v1/test", test_routes)
 app.use("/api/v1/support", support)
 app.use("/api/v1/logs", logs)
 

@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "374e6c04-195c-463f-acc1-de669bef7faf",
-		"name": "Senai Id ",
+		"name": "Senai Id (Refatorado)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39016017"
 	},
@@ -10,7 +10,7 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Buscar informações de usuário",
+					"name": "Listar Usuários",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -18,7 +18,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/hdv651wqsqom5bgn435",
+							"raw": "http://localhost:3000/api/v1/users/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -28,7 +28,32 @@
 								"api",
 								"v1",
 								"users",
-								"hdv651wqsqom5bgn435"
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar informações de usuário",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/7w38zulvm4fmeapb7v9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"7w38zulvm4fmeapb7v9"
 							]
 						}
 					},
@@ -43,7 +68,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/hdv651wqsqom5bgn435/profile-picture",
+							"raw": "http://localhost:3000/api/v1/users/r2p0mliu4vmeaq6wga/profile-picture",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -53,7 +78,7 @@
 								"api",
 								"v1",
 								"users",
-								"hdv651wqsqom5bgn435",
+								"r2p0mliu4vmeaq6wga",
 								"profile-picture"
 							]
 						}
@@ -101,7 +126,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImhkdjY1MXdxc3FvbTViZ240MzUiLCJjYXJnbyI6ImFsdW5vIiwiaWF0IjoxNzM4NDQzNTA0LCJleHAiOjE3MzkwNDgzMDR9.TadeSi5xb4-7bckevR3dbiZpyt6jxlE_kYSlCgqDSIE",
+									"value": "{{alunoJWT}}",
 									"type": "string"
 								}
 							]
@@ -134,7 +159,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImhkdjY1MXdxc3FvbTViZ240MzUiLCJjYXJnbyI6ImFsdW5vIiwiaWF0IjoxNzM4NDQzNTA0LCJleHAiOjE3MzkwNDgzMDR9.TadeSi5xb4-7bckevR3dbiZpyt6jxlE_kYSlCgqDSIE",
+									"value": "{{alunoJWT}}",
 									"type": "string"
 								}
 							]
@@ -142,7 +167,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/me/late-entries",
+							"raw": "http://localhost:3000/api/v1/users/me/late-entries/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -153,7 +178,8 @@
 								"v1",
 								"users",
 								"me",
-								"late-entries"
+								"late-entries",
+								""
 							]
 						}
 					},
@@ -167,7 +193,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImhkdjY1MXdxc3FvbTViZ240MzUiLCJjYXJnbyI6ImFsdW5vIiwiaWF0IjoxNzM4NDQzNTA0LCJleHAiOjE3MzkwNDgzMDR9.TadeSi5xb4-7bckevR3dbiZpyt6jxlE_kYSlCgqDSIE",
+									"value": "{{alunoJWT}}",
 									"type": "string"
 								}
 							]
@@ -175,7 +201,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/me/late-entries/2P0fY5ra",
+							"raw": "http://localhost:3000/api/v1/users/me/late-entries/gUgay83d",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -187,7 +213,143 @@
 								"users",
 								"me",
 								"late-entries",
-								"2P0fY5ra"
+								"gUgay83d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar liberação por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me/early-exits/KCnwxSAd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"early-exits",
+								"KCnwxSAd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar iberações",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me/early-exits/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"early-exits",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar pedido de update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me/update-requests/12733223",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"update-requests",
+								"12733223"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar pedidos de update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me/update-requests/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"update-requests",
+								""
 							]
 						}
 					},
@@ -230,7 +392,7 @@
 					"response": []
 				},
 				{
-					"name": "Validar código de verificação de email",
+					"name": "Verificar e-mail",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -239,7 +401,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"token\": 584456\r\n}",
+							"raw": "{\r\n    \"token\": 660351\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,7 +409,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/hdv651wqsqom5bgn435/verify-email/validate-token",
+							"raw": "http://localhost:3000/api/v1/users/qphhbgpzuwme96xrja/verify-email/validate-token",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -257,7 +419,7 @@
 								"api",
 								"v1",
 								"users",
-								"hdv651wqsqom5bgn435",
+								"qphhbgpzuwme96xrja",
 								"verify-email",
 								"validate-token"
 							]
@@ -269,13 +431,20 @@
 					"name": "Solicitar alteração de dados",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tel\": \"11 95023-1230\",\r\n    \"message\": \"Boa tarde, meu rg foi registrado errado. meu rg é 581706109\"\r\n}",
+							"raw": "{\r\n    \"tel\": \"11 95023-1230\",\r\n    \"message\": \"Boa tarde, meu nome está sem o acento no \\\"Otávio\\\"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,7 +452,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/hdv651wqsqom5bgn435/request-update",
+							"raw": "http://localhost:3000/api/v1/users/me/request-update",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -293,7 +462,7 @@
 								"api",
 								"v1",
 								"users",
-								"hdv651wqsqom5bgn435",
+								"me",
 								"request-update"
 							]
 						}
@@ -332,24 +501,22 @@
 					"response": []
 				},
 				{
-					"name": "Resetar Senha",
+					"name": "Pedir um atraso",
 					"request": {
 						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"senha\": \"senha123\",\r\n    \"confirmarSenha\": \"senha123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alunoJWT}}",
+									"type": "string"
 								}
-							}
+							]
 						},
+						"method": "POST",
+						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/reset-password?token=06a8a20bf3f59325525affbcd90ab31db25ece975a635e22df9ba71181d4",
+							"raw": "http://localhost:3000/api/v1/users/me/late-entries/request",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -359,13 +526,52 @@
 								"api",
 								"v1",
 								"users",
-								"reset-password"
-							],
-							"query": [
+								"me",
+								"late-entries",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Solicitar liberação",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
 									"key": "token",
-									"value": "06a8a20bf3f59325525affbcd90ab31db25ece975a635e22df9ba71181d4"
+									"value": "{{alunoJWT}}",
+									"type": "string"
 								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"motivo\": \"Treino da corpo e cia kkkk\",\r\n    \"horario_saida\": \"16:30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me/early-exits/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me",
+								"early-exits",
+								"request"
 							]
 						}
 					},
@@ -381,7 +587,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"rg\": \"468482969\",\r\n    \"senha\": \"Gomes@123\",\r\n    \"confirmarSenha\": \"Gomes@123\"\r\n}",
+							"raw": "{\r\n    \"cpf\": \"478.023.418-25\",\r\n    \"senha\": \"Ota@181207\",\r\n    \"confirmarSenha\": \"Ota@181207\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -389,7 +595,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/users/gpmt6sc9nlkm5bgps7f/setup-password",
+							"raw": "http://localhost:3000/api/v1/users/7w38zulvm4fmeapb7v9/setup-password",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -399,8 +605,48 @@
 								"api",
 								"v1",
 								"users",
-								"gpmt6sc9nlkm5bgps7f",
+								"7w38zulvm4fmeapb7v9",
 								"setup-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resetar Senha",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"senha\": \"Ota@181207\",\r\n    \"confirmarSenha\": \"Ota@181207\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/reset-password?token=a88c3aef108e6d0cac9b5de914ad1a99b793b3b2068c680a0d99b0295524",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "a88c3aef108e6d0cac9b5de914ad1a99b793b3b2068c680a0d99b0295524"
+								}
 							]
 						}
 					},
@@ -419,7 +665,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -436,7 +682,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/secretaria/4huc865w2qw1738520853007",
+							"raw": "http://localhost:3000/api/v1/secretaria/r7uzh6wdh48meaq1z17",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -446,7 +692,78 @@
 								"api",
 								"v1",
 								"secretaria",
-								"4huc865w2qw1738520853007"
+								"r7uzh6wdh48meaq1z17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Atraso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/ejixk5qa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"late-entries",
+								"ejixk5qa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar pedido de liberação",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"responsavel\": \"lucas\",\r\n    \"observacao\": \"os pais do aluno não permitiram\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/early-exits/kZxUYUo6/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"early-exits",
+								"kZxUYUo6",
+								""
 							]
 						}
 					},
@@ -460,7 +777,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -468,7 +785,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/hdv651wqsqom5bgn435",
+							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/7w38zulvm4fmeapb7v9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -479,7 +796,7 @@
 								"v1",
 								"secretaria",
 								"late-entries",
-								"hdv651wqsqom5bgn435"
+								"7w38zulvm4fmeapb7v9"
 							]
 						}
 					},
@@ -493,16 +810,16 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"motivo\": \"Pneu furou\",\r\n    \"responsavel\": \"Lucas\"\r\n}",
+							"raw": "{\r\n    \"motivo\": \"Trânsito à caminho do senai\",\r\n    \"responsavel\": \"Lucas\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -510,7 +827,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/2P0fY5ra/validate",
+							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/gUgay83d/validate",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -521,7 +838,7 @@
 								"v1",
 								"secretaria",
 								"late-entries",
-								"2P0fY5ra",
+								"gUgay83d",
 								"validate"
 							]
 						}
@@ -536,7 +853,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3Mzc2ODY0MzUsImV4cCI6MTczODI5MTIzNX0.5QyDXUz87rxFFTTvco-juIcQOjjuCQxstF-yw63NulI",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -548,32 +865,22 @@
 							"formdata": [
 								{
 									"key": "nome",
-									"value": "Felipe Oliveira Duarte Lima",
+									"value": "Otávio Vinícius Flauzino de Souza",
 									"type": "text"
 								},
 								{
-									"key": "rg",
-									"value": "284234941",
-									"type": "text"
-								},
-								{
-									"key": "login",
-									"value": "felipe_lima28",
+									"key": "cpf",
+									"value": "478.023.418-25",
 									"type": "text"
 								},
 								{
 									"key": "senha",
-									"value": "senai117@41",
+									"value": "senai117@25",
 									"type": "text"
 								},
 								{
 									"key": "turma",
-									"value": "12P1A",
-									"type": "text"
-								},
-								{
-									"key": "horario_entrada",
-									"value": "7:30",
+									"value": "12P2B",
 									"type": "text"
 								},
 								{
@@ -594,7 +901,7 @@
 								{
 									"key": "foto_perfil",
 									"type": "file",
-									"src": "/C:/Users/otavi/OneDrive/Imagens/Captura de tela 2025-01-16 232212.png"
+									"src": "/C:/Users/otavi/OneDrive/Imagens/EU.jpg"
 								}
 							]
 						},
@@ -624,7 +931,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -636,32 +943,27 @@
 							"formdata": [
 								{
 									"key": "nome",
-									"value": "Silas Bastianelli Pinto",
+									"value": "Bruno Messias Aguiar",
 									"type": "text"
 								},
 								{
 									"key": "cpf",
-									"value": "24146552087",
-									"type": "text"
-								},
-								{
-									"key": "login",
-									"value": "silasbastianellipinto",
+									"value": "425.051.248-54",
 									"type": "text"
 								},
 								{
 									"key": "senha",
-									"value": "Silas123",
+									"value": "Bruno123",
 									"type": "text"
 								},
 								{
 									"key": "pis",
-									"value": "38462917503",
+									"value": "13472345692",
 									"type": "text"
 								},
 								{
 									"key": "nif",
-									"value": "7654321",
+									"value": "3267723",
 									"type": "text"
 								},
 								{
@@ -676,13 +978,13 @@
 								},
 								{
 									"key": "email",
-									"value": "silasbastianelli@gmail.com",
+									"value": "brunomessias@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "foto_perfil",
 									"type": "file",
-									"src": "/C:/Users/otavi/OneDrive/Imagens/silas.png"
+									"src": "/C:/Users/otavi/OneDrive/Imagens/bruno.png"
 								}
 							]
 						},
@@ -712,7 +1014,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -755,7 +1057,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -772,7 +1074,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/secretaria/update-requests/45647253/deny",
+							"raw": "http://localhost:3000/api/v1/secretaria/update-requests/50821585/deny",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -783,7 +1085,7 @@
 								"v1",
 								"secretaria",
 								"update-requests",
-								"45647253",
+								"50821585",
 								"deny"
 							]
 						}
@@ -798,7 +1100,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3MzgzNTM5NTYsImV4cCI6MTczODk1ODc1Nn0.sirpiLC-GMkCNm0CStKMxdwIj07TMtuEmUjoAToezFk",
+									"value": "{{secretariaJWT}}",
 									"type": "string"
 								}
 							]
@@ -831,6 +1133,92 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Aprovar Liberação",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"responsavel\": \"Lucas\",\r\n    \"observacao\": \"Pode ir lá!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/early-exits/kZxUYUo6/allow",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"early-exits",
+								"kZxUYUo6",
+								"allow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Negar pedido de liberação",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"responsavel\": \"lucas\",\r\n    \"observacao\": \"os pais do aluno não permitiram\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/early-exits/blZ1boOu/deny",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"early-exits",
+								"blZ1boOu",
+								"deny"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -838,7 +1226,7 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "Login",
+					"name": "Login Secretaria",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -847,7 +1235,40 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\": \"otavio_vinicius58\",\r\n    \"senha\": \"senha\"\r\n}",
+							"raw": "{\r\n    \"login\": \"secretaria117\",\r\n    \"senha\": \"senai117@adm\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Otávio",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"478.023.418-25\",\r\n    \"senha\": \"Ota@181207\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -910,46 +1331,40 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "tests",
-			"item": [
-				{
-					"name": "http://localhost:3000/api/v1/test/atraso/hdv651wqsqom5bgn435",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"motivo\": \"Pneu furou\",\r\n    \"responsavel\": \"Lucas\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/v1/test/atraso/hdv651wqsqom5bgn435",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"v1",
-								"test",
-								"atraso",
-								"hdv651wqsqom5bgn435"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "alunoJWT",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijd3Mzh6dWx2bTRmbWVhcGI3djkiLCJjYXJnbyI6ImFsdW5vIiwiaWF0IjoxNzU1MjE4NTY2LCJleHAiOjE3NTU4MjMzNjZ9.3Fw_IrRSBePGkfXCZnEo9Du65EvXK6Q-uYlax8cCI2Q",
+			"type": "string"
+		},
+		{
+			"key": "secretariaJWT",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAiLCJjYXJnbyI6InNlY3JldGFyaWEiLCJpYXQiOjE3NTUyMTg5MzgsImV4cCI6MTc1NTgyMzczOH0.nzq5vG58cF6wGH-VjsMLrMS0pZOcI_VRGktmCw7BlS0",
+			"type": "string"
 		}
 	]
 }

@@ -32,6 +32,35 @@ const findUpdateRequestById = async (request_id) => {
 
 }
 
+const findUpdateRequestsByUserId = async (user_id) => {
+    try {
+        const updateRequests = await user_update_request_model.find({ user_id: user_id })
+        if (!updateRequests || updateRequests.length === 0) {
+            return [null, 404]
+        }
+        return [updateRequests, null]
+    }
+    catch (error) {
+        childLogger.error(`Error finding update requests by user id`, error)
+        return [null, 500]
+    }
+}
+
+const findAllUpdateRequests = async () => {
+    try {
+        const updateRequests = await user_update_request_model.find({})
+        if (!updateRequests || updateRequests.length === 0) {
+            return [null, 404]
+        }
+
+        return [updateRequests, null]
+    }
+    catch (error) {
+        childLogger.error(`Error finding all update requests`, error)
+        return [null, 500]
+    }
+}
+
 const acceptUpdateRequest = async (request_id) => {
     try {
         const result = await user_update_request_model.findOneAndUpdate({ request_id: request_id }, { status: "Aprovado" })
@@ -67,4 +96,4 @@ const denyUpdateRequest = async (request_id) => {
     }
 }
 
-export { createUpdateRequest, findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest }
+export { createUpdateRequest, findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest, findUpdateRequestsByUserId, findAllUpdateRequests }

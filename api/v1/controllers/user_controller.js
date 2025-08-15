@@ -1,9 +1,9 @@
 import moment from "moment";
 
 // Services
-import { findUserById, findUserPFP, generateQRCODE, updateUser, findUserByEmail } from "../services/user_services.js";
+import { findUserById, findUserPFP, generateQRCODE, updateUser, findUserByEmail, findAllUsers } from "../services/user_services.js";
 import { createToken, verifyToken, deleteToken } from "../services/email_token_services.js";
-import { createUpdateRequest } from "../services/update_request_services.js";
+import { createUpdateRequest, findUpdateRequestById, findUpdateRequestsByUserId } from "../services/update_request_services.js";
 import { createPasswordResetToken, deletePasswordResetToken, verifyPasswordResetToken } from "../services/password_reset_services.js";
 import { createLateEntry, getLateEntries, getLateEntry } from "../services/late_entry_services.js";
 import { getEarlyExit, getEarlyExitsByUser, requestEarlyExit } from "../services/early_exit_services.js";
@@ -37,24 +37,23 @@ const getUser = async (req, res) => {
         return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
     }
 
-    // Retornando o usuário
-    const filteredData = {
-        id: user.id,
-        nome: user.nome,
-        cargo: user.cargo,
-        rg: user.rg,
-        email: user.email,
-        data_nascimento: user.data_nascimento,
-        curso: user.curso,
-        turma: user.turma,
-        horario_entrada: user.horario_entrada,
-        matricula: user.matricula,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-    };
-    return ApiResponse.OK(res, filteredData)
+    return ApiResponse.OK(res, user)
 }
 
+// GET api/v1/users/
+const getUsers = async (req, res) => {
+    const [users, error] = await findAllUsers()
+    if (error) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor. ${error}`)
+    }
+    if (!users || users.length === 0) {
+        // Nenhum usuário encontrado.
+        return ApiResponse.NOTFOUND(res, "Nenhum usuário encontrado.")
+    }
+    // Retorna a lista de usuários
+    return ApiResponse.OK(res, users)
+}
 
 // GET api/v1/users/:id/foto-perfil
 const getFotoPerfil = async (req, res) => {
@@ -99,7 +98,7 @@ const primeiroAcesso = async (req, res) => {
         nome: user.nome,
         login: user.login,
         senha: user.senha_padrao,
-        rg: user.rg
+        cpf: user.cpf
     })
 }
 
@@ -306,9 +305,9 @@ const buscarAtraso = async (req, res) => {
 }
 
 
-// POST api/v1/users/:id/request-update
+// POST api/v1/users/me/request-update
 const pedirUpdate = async (req, res) => {
-    const id = req.params.id
+    const id = req.decoded.id
 
     const [user, findUserError] = await findUserById(id)
 
@@ -350,6 +349,49 @@ const pedirUpdate = async (req, res) => {
         return ApiResponse.ERROR(res, `Erro ao enviar email: ${sendEmailError}`)
     }
 
+}
+
+// GET api/v1/users/me/update-requests
+const buscarUpdates = async (req, res) => {
+    const user_id = req.decoded.id
+    const [user, findUserError] = await findUserById(user_id)
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor. ${findUserError}`)
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+    const [updateRequests, findUpdateRequestsError] = await findUpdateRequestsByUserId(user_id)
+    if (findUpdateRequestsError) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor. ${findUpdateRequestsError}`)
+    }
+
+    return ApiResponse.OK(res, { updateRequests })
+}
+
+//GET api/v1/users/me/update-requests/:id
+const buscarUpdate = async (req, res) => {
+    const user_id = req.decoded.id
+    const request_id = req.params.id
+    if (!request_id) {
+        return ApiResponse.BADREQUEST(res, "ID do pedido de atualização não foi fornecido.")
+    }
+    const [user, findUserError] = await findUserById(user_id)
+    if (!user && findUserError != 404) {
+        // Erro interno do servidor, algum problema com o banco de dados.
+        return ApiResponse.ERROR(res, `Erro interno do servidor. ${findUserError}`)
+    } else if (findUserError == 404) {
+        // Usuário não encontrado.
+        return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
+    }
+    const [updateRequest, findUpdateRequestError] = await findUpdateRequestById(request_id)
+
+    if (!updateRequest) {
+        return ApiResponse.NOTFOUND(res, "Pedido de atualização não encontrado.")
+    }
+    return ApiResponse.OK(res, { updateRequest })
 }
 
 // POST api/v1/users/forgot-password?email=
@@ -447,9 +489,9 @@ const resetPassword = async (req, res) => {
 // POST api/v1/users/:id/setup-password
 const setupPassword = async (req, res) => {
     const id = req.params.id
-    const { rg, senha, confirmarSenha } = req.body
+    const { cpf, senha, confirmarSenha } = req.body
 
-    if (!rg || !senha || !confirmarSenha) {
+    if (!cpf || !senha || !confirmarSenha) {
         return ApiResponse.BADREQUEST(res, "Preencha todos os campos")
     }
 
@@ -468,10 +510,10 @@ const setupPassword = async (req, res) => {
         return ApiResponse.NOTFOUND(res, "Usuário não foi encontrado.")
     }
 
-    // Verificando se o RG cadastrado e o fornecido coincidem
+    // Verificando se o CPF cadastrado e o fornecido coincidem
 
-    if (user.rg !== rg) {
-        return ApiResponse.BADREQUEST(res, "Rg não coincide com o cadástro.")
+    if (user.cpf !== cpf) {
+        return ApiResponse.BADREQUEST(res, "CPF não coincide com o cadastro.")
     }
 
     // Verificando se é o primeiro acesso do usuário
@@ -603,12 +645,15 @@ const buscarSaidaAntecipada = async (req, res) => {
 
 export {
     getUser,
+    getUsers,
     getFotoPerfil,
     primeiroAcesso,
     acesso,
     pedirToken,
     validarToken,
     pedirUpdate,
+    buscarUpdate,
+    buscarUpdates,
     forgotPassword,
     resetPassword,
     setupPassword,

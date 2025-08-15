@@ -24,54 +24,98 @@ import { early_exit_approved_template } from "../templates/early_exit_approved_t
 
 // POST api/v1/secretaria/register/student
 const registrarAluno = async (req, res) => {
-    let usuario = req.body
+    let usuario = req.body;
+
+    // Verifica se o arquivo foi enviado
+    if (!req.file) {
+        return ApiResponse.BADREQUEST(res, "Nenhuma imagem foi enviada ou houve um erro no upload");
+    }
 
     usuario.id = Math.random().toString(36).substring(2) + Date.now().toString(36);
-    usuario.senha_foi_alterada = false // O usuário acabou de ser criado, portanto está com a senha padrão
-    usuario.email = ``
-    usuario.cargo = "aluno"
+    usuario.senha_foi_alterada = false;
+    usuario.email = usuario.email || '';
+    usuario.cargo = "aluno";
+    usuario.foto_perfil = `/fotos_perfil/${req.file.filename}`; // Caminho relativo para acessar a imagem
 
-    usuario = cripografarSenhaUsuario(req.body)
+    usuario = cripografarSenhaUsuario(usuario);
 
     try {
-        const [novoAluno, error] = await createUser(usuario)
-        if (error == 409) {
-            return ApiResponse.ALREADYEXISTS(res, "Este aluno já está cadastrado!")
-        } else if (error == 500) {
-            return ApiResponse.ERROR(res, "Erro ao cadastrar o aluno")
+        const [novoAluno, error] = await createUser(usuario);
+
+        if (error === 409) {
+            // Remove a imagem se o usuário já existir
+            fs.unlinkSync(req.file.path);
+            return ApiResponse.ALREADYEXISTS(res, "Este aluno já está cadastrado!");
+        } else if (error === 500) {
+            // Remove a imagem se houver erro no cadastro
+            fs.unlinkSync(req.file.path);
+            return ApiResponse.ERROR(res, "Erro ao cadastrar o aluno");
         }
 
-        return ApiResponse.CREATED(res, { id_aluno: novoAluno.id }, `Aluno ${novoAluno.nome} criado com sucesso!`)
-    } catch (error) {
-        return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionario", error)
-    }
-}
+        return ApiResponse.CREATED(res, {
+            id_aluno: novoAluno.id,
+            foto_perfil: novoAluno.foto_perfil
+        }, `Aluno ${novoAluno.nome} criado com sucesso!`);
 
+    } catch (error) {
+        // Remove a imagem se houver qualquer erro não tratado
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
+        return ApiResponse.ERROR(res, "Erro ao cadastrar o aluno", error);
+    }
+};
 
 // POST api/v1/secretaria/register/employee
 const registrarFuncionario = async (req, res) => {
-    let usuario = req.body
-
-    usuario.cargo = "funcionario"
-    usuario.senha_foi_alterada = true
-    usuario.id = Math.random().toString(36).substring(2) + Date.now().toString()
-
-    usuario = cripografarSenhaUsuario(req.body)
-
-    try {
-        const [novoFuncionario, error] = await createUser(usuario)
-        if (error == 409) {
-            return ApiResponse.ALREADYEXISTS(res, "Este funcionário já está cadastrado!")
-        } else if (error == 500) {
-            return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionário")
-        }
-
-        return ApiResponse.CREATED(res, { id_funcionario: novoFuncionario.id }, `${novoFuncionario.descricao} ${novoFuncionario.nome} criado com sucesso!`)
-    } catch (error) {
-        return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionario", error)
+    // 1. Verificação obrigatória da foto
+    if (!req.file) {
+        return ApiResponse.BADREQUEST(res, "Foto de perfil é obrigatória para cadastro de funcionário");
     }
 
-}
+    let usuario = req.body;
+
+    // 2. Validação adicional do arquivo de imagem
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(req.file.mimetype)) {
+        fs.unlinkSync(req.file.path); // Remove arquivo inválido
+        return ApiResponse.BADREQUEST(res, "Formato de imagem inválido. Use JPEG, PNG ou GIF");
+    }
+
+    // 3. Preparação dos dados do usuário
+    usuario.cargo = "funcionario";
+    usuario.id = Math.random().toString(36).substring(2) + Date.now().toString(36);
+    usuario.senha_foi_alterada = false;
+    usuario.email = usuario.email || '';
+    usuario.foto_perfil = `/fotos_perfil/${req.file.filename}`; // Caminho obrigatório
+
+    usuario = cripografarSenhaUsuario(usuario);
+
+    try {
+        const [novoFuncionario, error] = await createUser(usuario);
+
+        // 4. Tratamento de erros com rollback da imagem
+        if (error === 409) {
+            fs.unlinkSync(req.file.path);
+            return ApiResponse.ALREADYEXISTS(res, "Este funcionário já está cadastrado!");
+        }
+        else if (error === 500) {
+            fs.unlinkSync(req.file.path);
+            return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionário");
+        }
+
+        // 5. Resposta de sucesso
+        return ApiResponse.CREATED(res, {
+            id_funcionario: novoFuncionario.id,
+            foto_perfil: novoFuncionario.foto_perfil
+        }, `${novoFuncionario.descricao} ${novoFuncionario.nome} criado com sucesso!`);
+
+    } catch (error) {
+        // 6. Limpeza em caso de erro inesperado
+        if (req.file?.path) fs.unlinkSync(req.file.path);
+        return ApiResponse.ERROR(res, "Erro ao cadastrar o funcionário", error);
+    }
+};
 
 
 // DELETE api/v1/secretaria/:id

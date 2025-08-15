@@ -12,6 +12,7 @@ const verifyJwt = (token) => {
     const SECRET = process.env.SECRET || "Produção" // Caso o arquivo .env esteja inutilizado, usamos "Produção" como segredo (para testes)
     let result = []
 
+
     jwt.verify(token, SECRET, (err, decoded) => {
         if (!decoded) {
             result = [null, 401]
