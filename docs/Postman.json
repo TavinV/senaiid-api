@@ -356,6 +356,72 @@
 					"response": []
 				},
 				{
+					"name": "Listar liberações",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/early-exits/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"early-exits",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar pedidos de update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/update-requests/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"update-requests",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Solicitar código de verificação de email",
 					"request": {
 						"auth": {
@@ -797,6 +863,39 @@
 								"secretaria",
 								"late-entries",
 								"7w38zulvm4fmeapb7v9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Atrasos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{secretariaJWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/secretaria/late-entries/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"secretaria",
+								"late-entries",
+								""
 							]
 						}
 					},
