@@ -97,6 +97,19 @@ const deleteEarlyExit = async (early_exit_id) => {
     }
 }
 
+const getAllEarlyExits = async () => {
+    try {
+        const earlyExits = await EarlyExit.find({})
+        if (!earlyExits || earlyExits.length === 0) {
+            return [null, 404]
+        }
+        return [earlyExits, null]
+    } catch (error) {
+        childLogger.error(`Error fetching all early exits: ${error.message}`)
+        return [null, 500]
+    }
+}
+
 export {
     requestEarlyExit,
     getEarlyExit,
@@ -104,4 +117,5 @@ export {
     denyEarlyExit,
     getEarlyExitsByUser,
     deleteEarlyExit,
+    getAllEarlyExits
 }

@@ -1,8 +1,8 @@
 // Services
 import { findUserById, updateUser, createUser, deleteUser, findUserPFP } from "../services/user_services.js";
-import { findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest } from "../services/update_request_services.js";
-import { validateLateEntry, getLateEntries, getLateEntry, deleteLateEntry } from "../services/late_entry_services.js";
-import { getEarlyExit, deleteEarlyExit, allowEarlyExit, denyEarlyExit } from "../services/early_exit_services.js";
+import { findUpdateRequestById, acceptUpdateRequest, denyUpdateRequest, findAllUpdateRequests } from "../services/update_request_services.js";
+import { validateLateEntry, getLateEntries, getLateEntry, deleteLateEntry, getAllLateEntries } from "../services/late_entry_services.js";
+import { getEarlyExit, deleteEarlyExit, allowEarlyExit, denyEarlyExit, getAllEarlyExits } from "../services/early_exit_services.js";
 
 //Lib
 import sendMail from "../lib/Emails.js";
@@ -541,5 +541,50 @@ const deletarSaidaAntecipada = async (req, res) => {
     return ApiResponse.DELETED(res, "Pedido de liberação deletado com sucesso!")
 }
 
+// GET api/v1/secretaria/late-entries/
+const atrasosDeTodosAlunos = async (req, res) => {
+    const [lateEntries, findLateEntriesError] = await getAllLateEntries()
 
-export { registrarAluno, registrarFuncionario, atualizarUsuario, deletarUsuario, aprovarPedido, rejeitarPedido, validarAtraso, atrasosDeUmAluno, deletarAtraso, validarSaidaAntecipada, negarSaidaAntecipada, deletarSaidaAntecipada }
+    if (findLateEntriesError && findLateEntriesError != 404) {
+        logger.error("Erro ao buscar registros de atraso", findLateEntriesError)
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    if (!lateEntries || lateEntries.length === 0) {
+        return ApiResponse.NOTFOUND(res, "Nenhum registro de atraso encontrado.")
+    }
+
+    return ApiResponse.OK(res, { lateEntries }, "Registros de atraso encontrados com sucesso.")
+}
+
+// GET api/v1/secretaria/early-exits/
+const saidasAntecipadasDeTodosAlunos = async (req, res) => {
+    const [earlyExits, findEarlyExitsError] = await getAllEarlyExits()
+
+    if (findEarlyExitsError && findEarlyExitsError != 404) {
+        logger.error("Erro ao buscar registros de liberações", findEarlyExitsError)
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+
+    if (!earlyExits || earlyExits.length === 0) {
+        return ApiResponse.NOTFOUND(res, "Nenhum registro de liberação encontrado.")
+    }
+
+    return ApiResponse.OK(res, { earlyExits }, "Registros de liberações encontrados com sucesso.")
+}
+
+// GET api/v1/secretaria/update-requests
+const pedidosDeAtualizacao = async (req, res) => {
+    const [updateRequests, findUpdateRequestsError] = await findAllUpdateRequests()
+    if (findUpdateRequestsError && findUpdateRequestsError != 404) {
+        logger.error("Erro ao buscar pedidos de atualização", findUpdateRequestsError)
+        return ApiResponse.ERROR(res, "Erro interno do servidor.")
+    }
+    if (!updateRequests || updateRequests.length === 0) {
+        return ApiResponse.NOTFOUND(res, "Nenhum pedido de atualização encontrado.")
+    }
+
+    return ApiResponse.OK(res, { updateRequests }, "Pedidos de atualização encontrados com sucesso.")
+}
+
+export { registrarAluno, registrarFuncionario, atualizarUsuario, deletarUsuario, aprovarPedido, rejeitarPedido, validarAtraso, atrasosDeUmAluno, deletarAtraso, validarSaidaAntecipada, negarSaidaAntecipada, deletarSaidaAntecipada, saidasAntecipadasDeTodosAlunos, atrasosDeTodosAlunos, pedidosDeAtualizacao };

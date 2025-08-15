@@ -39,6 +39,14 @@ const getLateEntries = async (user_id) => {
     return [lateEntries, null]
 }
 
+const getAllLateEntries = async () => {
+    const lateEntries = await lateEntry.find({})
+    if (!lateEntries || lateEntries.length === 0) {
+        return [null, 404]
+    }
+    return [lateEntries, null]
+}
+
 const getLateEntry = async (late_entry_id) => {
     let foundLateEntry = await lateEntry.findOne({ id: late_entry_id })
 
@@ -85,4 +93,4 @@ const deleteLateEntry = async (late_entry_id) => {
 }
 
 
-export { createLateEntry, validateLateEntry, getLateEntries, getLateEntry, closeLateEntry, deleteLateEntry }
+export { createLateEntry, validateLateEntry, getLateEntries, getLateEntry, closeLateEntry, deleteLateEntry, getAllLateEntries }
